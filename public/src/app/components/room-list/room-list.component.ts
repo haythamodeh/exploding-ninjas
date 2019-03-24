@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { RoomService } from 'src/app/services/room.service';
-import { Room } from '../../common/room';
+import { Room } from 'src/app/common/room';
 
 @Component({
   selector: 'app-room-list',
@@ -9,32 +9,35 @@ import { Room } from '../../common/room';
   styleUrls: ['./room-list.component.scss']
 })
 export class RoomListComponent implements OnInit, OnDestroy {
-  rooms: Observable<string[]>;
-  currentRoom: string;
+  allRooms: Observable<string[]>;
+  currentRoom: Room = { id: '', chat: '' };
   private _roomSub: Subscription;
 
   constructor(private roomService: RoomService) { }
 
   ngOnInit() {
-    this.rooms = this.roomService.rooms;
+    this.allRooms = this.roomService.allRooms;
     this._roomSub = this.roomService.currentRoom
-      .subscribe(room => this.currentRoom = room.id);
+      .subscribe((room: Room) => {
+        console.log(room);
+        this.currentRoom = room;
+      });
   }
 
-  ngOnDestroy() {
-    this._roomSub.unsubscribe();
+  ngOnDestroy(): void {
+    return this._roomSub.unsubscribe();
   }
 
   loadRoom(id: string) {
-    this.roomService.getRoom(id);
+    return this.roomService.getRoom(id);
   }
 
   newRoom() {
-    this.roomService.newRoom();
+    return this.roomService.createRoom();
   }
 
-  isSelected(id: string) {
-    return this.currentRoom === id;
+  isSelected(id: string): Boolean {
+    return this.currentRoom.id === id;
   }
 
 }

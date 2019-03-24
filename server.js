@@ -20,15 +20,16 @@ io.on("connection", socket => {
   };
 
   socket.on("getRoom", roomId => {
+    console.log(rooms[roomId]);
     safeJoin(roomId); // change socket channel
     socket.emit("room", rooms[roomId]);
   });
 
   socket.on("addRoom", room => {
     rooms[room.id] = room; // add room to fake database
-    safeJoin(room.id); // change socket channel
-    io.emit("rooms", Object.keys(rooms));
-    socket.emit("room", room);
+    safeJoin(room.id); // change socket channel to room Id
+    io.emit("allRooms", Object.keys(rooms)); // emit updated all rooms
+    socket.emit("room", room); // emit new room created
   });
 
   socket.on("editRoom", room => {
@@ -36,5 +37,5 @@ io.on("connection", socket => {
     socket.to(room.id).emit("room", room);
   });
 
-  io.emit("rooms", Object.keys(rooms));
+  io.emit("allRooms", Object.keys(rooms));
 });

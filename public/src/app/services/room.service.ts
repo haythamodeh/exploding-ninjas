@@ -7,12 +7,12 @@ import { Room } from '../common/room';
 })
 export class RoomService {
   currentRoom = this.socket.fromEvent<Room>('room');
-  rooms = this.socket.fromEvent<string[]>('rooms');
+  allRooms = this.socket.fromEvent<string[]>('allRooms');
   id = 0;
 
   constructor(private socket: Socket) { }
 
-  private roomId(): string {
+  private createId(): string {
     this.id++;
     return `${this.id}`;
   }
@@ -21,8 +21,8 @@ export class RoomService {
     return this.socket.emit('getRoom', id);
   }
 
-  newRoom() {
-    return this.socket.emit('addRoom', { id: this.roomId(), chat: '' });
+  createRoom() {
+    return this.socket.emit('addRoom', { id: this.createId(), chat: '' });
   }
 
   editRoom(room: Room) {
