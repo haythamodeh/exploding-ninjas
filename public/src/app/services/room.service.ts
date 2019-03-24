@@ -18,15 +18,15 @@ export class RoomService {
   }
 
   getRoom(id: string) {
-    this.socket.emit('getRoom', id);
+    return this.socket.emit('getRoom', id);
   }
 
   newRoom() {
-    this.socket.emit('addRoom', { id: this.roomId(), chat: '' });
+    return this.socket.emit('addRoom', { id: this.roomId(), chat: '' });
   }
 
   editRoom(room: Room) {
-    this.socket.emit('editRoom', room);
+    return this.socket.emit('editRoom', room);
   }
 
 }
