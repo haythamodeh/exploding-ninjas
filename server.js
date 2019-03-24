@@ -1,5 +1,4 @@
 const express = require('express');
-const https = require('https');
 const path = require('path');
 const port = 1337;
 const app = express();
