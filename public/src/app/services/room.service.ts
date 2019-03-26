@@ -7,26 +7,27 @@ import { Room } from '../common/room';
 })
 export class RoomService {
   currentRoom = this.socket.fromEvent<Room>('room');
-  allRooms = this.socket.fromEvent<string[]>('allRooms');
-  id = 0;
+  players: any;
 
-  constructor(private socket: Socket) { }
+  constructor(private socket: Socket) { 
 
-  private createId(): string {
-    this.id++;
-    return `${this.id}`;
+    this.socket.on("gettingplayers", data => {
+      console.log("client got all players",data);
+    });
+    this.socket.on("newplayercreated", data => {
+      console.log("new player created",data);
+    });
   }
-
-  getRoom(id: string) {
-    return this.socket.emit('getRoom', id);
-  }
-
-  createRoom() {
-    return this.socket.emit('addRoom', { id: this.createId(), chat: '' });
-  }
-
-  editRoom(room: Room) {
-    return this.socket.emit('editRoom', room);
+  
+  // editRoom(room: Room) {
+    //   return this.socket.emit('editRoom', room);
+    // }
+    
+  addPlayer(newplayer: string) {
+    this.socket.emit("newplayer", newplayer);
+  }  
+  getPlayers(){
+    this.socket.emit("gotplayer", this.players);
   }
 
 }

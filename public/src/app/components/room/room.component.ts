@@ -13,22 +13,32 @@ import { startWith } from 'rxjs/operators';
 })
 export class RoomComponent implements OnInit, OnDestroy {
   room: Room;
+  name: any;
   private _roomSub: Subscription;
 
   constructor(private roomService: RoomService) { }
 
   ngOnInit() {
-    this._roomSub = this.roomService.currentRoom.pipe(
-      startWith({ id: '', chat: 'Select an existing room or create a new one.'})
+    this.roomService.currentRoom.pipe(
+      startWith({ id: '', chat: ''})
     ).subscribe(room => this.room = room);
+      this.name = {name: ""};
   }
 
   ngOnDestroy() {
     this._roomSub.unsubscribe();
   }
 
-  editRoom() {
-    this.roomService.editRoom(this.room);
+  // editRoom() {
+  //   this.roomService.editRoom(this.room);
+  // }
+  addPlayer(){
+    this.roomService.addPlayer(this.name);
+    this.name = {name: ""};
+  }
+
+  getPlayers() {
+    this.roomService.getPlayers();
   }
 
 }

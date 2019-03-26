@@ -1,13 +1,13 @@
-<div class="chatroom">
-  <h2 
-    class="chatroom__location"
-    *ngIf="room.id">
-    Chatroom {{room.id}}
-  </h2>
-  <textarea 
-    class="chatroom__msg-input"
-    [(ngModel)]='room.chat' 
-    (keyup)='editRoom()' 
-    placeholder='Start typing...'>
-  </textarea>
+
+<div class="container">
+  {{name | json}}
+  <form (submit)="addPlayer()">
+    <div class="group">
+      <label for="">Name</label>
+      <input type="text" name="name.name" [(ngModel)]="name.name">
+    </div>
+    <button class="btn btn-primary">Enter</button>
+  </form>
+  <button class="btn btn-success" (click)="getPlayers()">Get All Players</button>
+
 </div>
